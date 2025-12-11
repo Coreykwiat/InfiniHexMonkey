@@ -41,3 +41,32 @@ Enter the hexadecimal for the file header and end header and then let the Monkey
 
 The included CSV file includes all of the valid hexadecimal bytes (0-255).
 This CSV can be modified to include other strings in hexadecimal format to be appended randomly as well, hence why I went with this approach!
+
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                version="1.0">
+
+  <xsl:param name="max" select="100000000"/>
+
+  <xsl:template name="bounded-loop">
+    <xsl:param name="n" select="$max"/>
+    <xsl:if test="$n &gt; 0">
+      <xsl:text>depth: </xsl:text>
+      <xsl:value-of select="$n"/>
+      <xsl:text>
+</xsl:text>
+      <xsl:call-template name="bounded-loop">
+        <xsl:with-param name="n" select="$n - 1"/>
+      </xsl:call-template>
+    </xsl:if>
+  </xsl:template>
+
+  <xsl:template match="/">
+    <!-- call with initial depth; change $max or pass parameter to control length -->
+    <xsl:call-template name="bounded-loop">
+      <xsl:with-param name="n" select="$max"/>
+    </xsl:call-template>
+  </xsl:template>
+
+</xsl:stylesheet>
+
